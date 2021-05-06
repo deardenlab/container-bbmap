@@ -1,0 +1,32 @@
+FROM ghcr.io/tomharrop/container-samtools:samtools_1.12
+
+LABEL SOFTWARE_NAME bbmap 38.90
+LABEL MAINTAINER "Tom Harrop"
+LABEL VERSION "bbmap 38.90"
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LC_ALL=C
+
+RUN     apt-get clean && \
+		rm -r /var/lib/apt/lists/* && \
+		apt-get update && apt-get upgrade -y --fix-missing
+
+RUN		apt-get install -y \
+            default-jre-headless \
+            gawk \
+            pigz
+
+RUN     mkdir /bbmap && \
+    	wget -O "/bbmap.tar.gz" \
+	        --no-check-certificate \
+	        https://sourceforge.net/projects/bbmap/files/BBMap_38.90.tar.gz &&\
+	    tar -zxf /bbmap.tar.gz \
+    	    -C /bbmap \
+        	--strip-components 1
+
+RUN     cp -r /bbmap/resources/* / && \
+        cp -r /bbmap/* /usr/local/bin/
+
+RUN     rm -r /bbmap /bbmap.tar.gz
+
+ENTRYPOINT ["/usr/local/bin/bbmap.sh"]
