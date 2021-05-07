@@ -1,4 +1,4 @@
-FROM ghcr.io/tomharrop/container-samtools:samtools_1.12
+FROM ghcr.io/deardenlab/container-samtools:samtools_1.12
 
 LABEL SOFTWARE_NAME bbmap 38.90
 LABEL MAINTAINER "Tom Harrop"
